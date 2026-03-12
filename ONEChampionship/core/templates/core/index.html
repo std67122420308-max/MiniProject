@@ -9,15 +9,15 @@
     <h1>{{title}}</h1>
     <hr>
     <div class="row">
-      {% for one_championship in one_championships %}
+      {% for formulaone in formulaones %}
         <div class="col-lg-3">
-          <div class="card mt-4 card-one_championship">
-            <a href="{{url_for('core.detail', id=one_championship.id)}}">
-              <img src="{{one_championship.img_url}}" alt="" class="card-img-top bg-secondary">
+          <div class="card mt-4 card-formulaone">
+            <a href="{{url_for('core.detail', id=formulaone.id)}}">
+              <img src="{{formulaone.img_url}}" alt="" class="card-img-top bg-secondary">
             </a>
             <div class="card-body">
-              <h2 class="text-success">{{one_championship.name}}</h2>
-              {% for type in one_championship.types %}
+              <h2 class="text-success">{{formulaone.name}}</h2>
+              {% for type in formulaone.Teams %}
                 <a href="#" class="btn btn-outline-secondary btn-sm">
                   {{type.name}}
                 </a>
