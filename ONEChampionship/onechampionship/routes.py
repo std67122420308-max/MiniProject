@@ -12,7 +12,9 @@ def index():
 
     page = request.args.get("page", 1, type=int)
 
-    query = db.select(ONEChampionship).where(ONEChampionship.user_id == current_user.id)
+    query = db.select(ONEChampionship).where(
+        ONEChampionship.user_id == current_user.id
+    )
 
     onechampionships = db.paginate(
         query,
@@ -22,7 +24,7 @@ def index():
 
     return render_template(
         "onechampionship/index.html",
-        title="Formula One Page",
+        title="Fighter Page",
         onechampionships=onechampionships
     )
 
@@ -36,10 +38,12 @@ def new_onechampionship():
     if request.method == "POST":
 
         name = request.form.get("name")
-        number = request.form.get("number")
-        world_championships = request.form.get("world_championships")
-        nationality = request.form.get("nationality")
-        img_url = request.form.get("img_url")
+        age = request.form.get("age")
+        country = request.form.get("country")
+        weight_class = request.form.get("weight_class")
+        gym = request.form.get("gym")
+        description = request.form.get("description")
+        image = request.form.get("image")
 
         team_ids = request.form.getlist("teams")
 
@@ -50,31 +54,47 @@ def new_onechampionship():
                 selected_teams.append(team)
 
         existing = db.session.scalar(
-            db.select(ONEChampionship).where(ONEChampionship.name == name)
+            db.select(ONEChampionship).where(
+                ONEChampionship.name == name
+            )
         )
 
         if existing:
-            flash(f"Driver {name} already exists!", "warning")
+            flash(f"Fighter {name} already exists!", "warning")
             return redirect(url_for("onechampionship.new_onechampionship"))
 
-        new_driver = ONEChampionship(
+        new_fighter = ONEChampionship(
             name=name,
-            number=number,
-            world_championships=world_championships,
-            nationality=nationality,
-            img_url=img_url,
+            age=age,
+            country=country,
+            weight_class=weight_class,
+            gym=gym,
+            description=description,
+            image=image,
             user_id=current_user.id,
-            teams=selected_teams,
+            teams=selected_teams
         )
 
-        db.session.add(new_driver)
+        db.session.add(new_fighter)
         db.session.commit()
 
-        flash("Driver added successfully!", "success")
+        flash("Fighter added successfully!", "success")
         return redirect(url_for("onechampionship.index"))
 
     return render_template(
         "onechampionship/new_onechampionship.html",
-        title="New Driver",
+        title="New Fighter",
         teams=teams
+    )
+
+
+@onechampionship_bp.route("/detail/<int:id>")
+def detail_onechampionship(id):
+
+    fighter = db.session.get(ONEChampionship, id)
+
+    return render_template(
+        "onechampionship/detail.html",
+        title=fighter.name,
+        fighter=fighter
     )

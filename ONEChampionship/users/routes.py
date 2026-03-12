@@ -49,7 +49,6 @@ def register():
 
     return render_template("users/register.html", title="Register Page")
 
-
 @users_bp.route("/login", methods=["GET", "POST"])
 def login():
 

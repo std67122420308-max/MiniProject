@@ -62,22 +62,33 @@ class ONEChampionship(db.Model):
     __tablename__ = "onechampionship"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
-    number: Mapped[str] = mapped_column(String(20), nullable=False)
-    world_championships: Mapped[str] = mapped_column(String(20), nullable=False)
-    nationality: Mapped[str] = mapped_column(Text, nullable=False)
-    img_url: Mapped[str] = mapped_column(Text, nullable=False)
 
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+    name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    age: Mapped[int] = mapped_column(Integer, nullable=False)
+    country: Mapped[str] = mapped_column(String(50), nullable=False)
+    weight_class: Mapped[str] = mapped_column(String(50), nullable=False)
+    gym: Mapped[str] = mapped_column(String(100), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    image: Mapped[str] = mapped_column(Text, nullable=False)
+
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
+
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now()
     )
 
     user: Mapped["User"] = relationship(back_populates="fighters")
 
     teams: Mapped[List["Team"]] = relationship(
-        secondary=one_team, back_populates="fighters"
+        secondary=one_team,
+        back_populates="fighters"
     )
 
     def __repr__(self):

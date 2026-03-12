@@ -1,20 +1,19 @@
 <nav aria-label="Page navigation" class="mb-3">
   <ul class="pagination justify-content-center">
 
-    ```
-    {% if onechampionshipes.has_prev %}
+    {% if onechampionships.has_prev %}
     <li class="page-item">
-      <a class="page-link" href="{{ url_for('core.index', page=onechampionshipes.prev_num) }}">
+      <a class="page-link" href="{{ url_for('core.index', page=onechampionships.prev_num) }}">
         Previous
       </a>
     </li>
     {% endif %}
 
-    {% for number in onechampionshipes.iter_pages() %}
+    {% for number in onechampionships.iter_pages() %}
 
     {% if number %}
 
-    {% if onechampionshipes.page != number %}
+    {% if onechampionships.page != number %}
     <li class="page-item">
       <a class="page-link" href="{{ url_for('core.index', page=number) }}">
         {{ number }}
@@ -37,14 +36,13 @@
 
     {% endfor %}
 
-    {% if onechampionshipes.has_next %}
+    {% if onechampionships.has_next %}
     <li class="page-item">
-      <a class="page-link" href="{{ url_for('core.index', page=onechampionshipes.next_num) }}">
+      <a class="page-link" href="{{ url_for('core.index', page=onechampionships.next_num) }}">
         Next
       </a>
     </li>
     {% endif %}
-    ```
 
   </ul>
 </nav>
