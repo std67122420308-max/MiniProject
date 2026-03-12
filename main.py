@@ -1,4 +1,4 @@
-from ONE_Championship import create_app
+from onechampionship import create_app
 
 app = create_app()
 

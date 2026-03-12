@@ -1,35 +1,35 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from formulaone.extensions import db
-from formulaone.models import FormulaOne, Team
+from onechampionship.extensions import db
+from onechampionship.models import ONEChampionship, Team
 from flask_login import login_required, current_user
 
-formulaone_bp = Blueprint("formulaone", __name__, template_folder="templates")
+onechampionship_bp = Blueprint("onechampionship", __name__, template_folder="templates")
 
 
-@formulaone_bp.route("/")
+@onechampionship_bp.route("/")
 @login_required
 def index():
 
     page = request.args.get("page", 1, type=int)
 
-    query = db.select(FormulaOne).where(FormulaOne.user_id == current_user.id)
+    query = db.select(ONEChampionship).where(ONEChampionship.user_id == current_user.id)
 
-    formulaones = db.paginate(
+    onechampionships = db.paginate(
         query,
         per_page=4,
         page=page
     )
 
     return render_template(
-        "formulaone/index.html",
+        "onechampionship/index.html",
         title="Formula One Page",
-        formulaones=formulaones
+        onechampionships=onechampionships
     )
 
 
-@formulaone_bp.route("/new", methods=["GET", "POST"])
+@onechampionship_bp.route("/new", methods=["GET", "POST"])
 @login_required
-def new_formulaone():
+def new_onechampionship():
 
     teams = db.session.scalars(db.select(Team)).all()
 
@@ -50,14 +50,14 @@ def new_formulaone():
                 selected_teams.append(team)
 
         existing = db.session.scalar(
-            db.select(FormulaOne).where(FormulaOne.name == name)
+            db.select(ONEChampionship).where(ONEChampionship.name == name)
         )
 
         if existing:
             flash(f"Driver {name} already exists!", "warning")
-            return redirect(url_for("formulaone.new_formulaone"))
+            return redirect(url_for("onechampionship.new_onechampionship"))
 
-        new_driver = FormulaOne(
+        new_driver = ONEChampionship(
             name=name,
             number=number,
             world_championships=world_championships,
@@ -71,10 +71,10 @@ def new_formulaone():
         db.session.commit()
 
         flash("Driver added successfully!", "success")
-        return redirect(url_for("formulaone.index"))
+        return redirect(url_for("onechampionship.index"))
 
     return render_template(
-        "formulaone/new_formulaone.html",
+        "onechampionship/new_onechampionship.html",
         title="New Driver",
         teams=teams
     )

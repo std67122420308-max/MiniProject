@@ -1,35 +1,53 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-  {{title}}
+{{ title }}
 {% endblock %}
 
 {% block content %}
-  <div class="container mt-3">
-    <h1>{{title}}</h1>
-    <hr>
-    <div class="row">
-      {% for formulaone in formulaones %}
-        <div class="col-lg-3">
-          <div class="card mt-4 card-formulaone">
-            <a href="{{url_for('core.detail', id=formulaone.id)}}">
-              <img src="{{formulaone.img_url}}" alt="" class="card-img-top bg-secondary">
-            </a>
-            <div class="card-body">
-              <h2 class="text-success">{{formulaone.name}}</h2>
-              {% for type in formulaone.Teams %}
-                <a href="#" class="btn btn-outline-secondary btn-sm">
-                  {{type.name}}
-                </a>
-              {% endfor %}
-              
-            </div>
-          </div>
+
+<div class="container mt-3">
+
+  <h1>{{ title }}</h1>
+  <hr>
+
+  <div class="row">
+
+    {% for onechampionship in onechampionships.items %}
+    <div class="col-lg-3 col-md-4 col-sm-6">
+
+      <div class="card mt-4 card-onechampionship">
+
+        <a href="{{ url_for('core.detail', id=onechampionship.id) }}">
+          <img src="{{ onechampionship.img_url }}" class="card-img-top bg-secondary" alt="{{ onechampionship.name }}">
+        </a>
+
+        <div class="card-body">
+
+          <h5 class="card-title">
+            {{ onechampionship.name }}
+          </h5>
+
+          <p class="card-text">
+            {{ onechampionship.nationality }}
+          </p>
+
+          <a href="{{ url_for('core.detail', id=onechampionship.id) }}" class="btn btn-outline-success btn-sm">
+            View Detail
+          </a>
+
         </div>
-      {% endfor %}
-      
+
+      </div>
+
     </div>
-    <br>
-    {% include "core/pagination.html" %}
+    {% endfor %}
+
   </div>
+
+  <div class="mt-4">
+    {% include 'core/pagination.html' %}
+  </div>
+
+</div>
 {% endblock %}

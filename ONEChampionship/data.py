@@ -1,10 +1,15 @@
-
-formulaone_Teams = [
-  'Water', 'Fire', 'Grass', 'Flying', 'Rock',
-  'Ground', 'Steel', 'Electric', 'Fairy', 'Ghost',
-  'Dark', 'Dragon', 'Ice', 'Bug', 'Fighting', 'Poison',
-  'Psychic', 'Normal'
+onechampionship_Teams = [
+  "อะตอมเวต",
+  "สตรอว์เวต",
+  "ฟลายเวต",
+  "แบนตัมเวต",
+  "เฟเธอร์เวต",
+  "ไลต์เวต",
+  "เวลเตอร์เวต",
+  "มิดเดิลเวต",
+  "ไลต์เฮฟวีเวต",
+  "เฮฟวีเวต"
 ]
 
-from formulaone.models import Type
-Teams = [Type(name=type) for type in formulaone_Teams]
+from onechampionship.models import Type
+Teams = [Type(name=type) for type in onechampionship_Teams]

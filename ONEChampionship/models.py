@@ -1,4 +1,4 @@
-from formulaone.extensions import db, login_manager
+from onechampionship.extensions import db, login_manager
 from sqlalchemy import Integer, String, Text, Table, Column, DateTime, ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
@@ -30,17 +30,17 @@ class User(db.Model, UserMixin):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    drivers: Mapped[List["FormulaOne"]] = relationship(back_populates="user")
+    fighters: Mapped[List["ONEChampionship"]] = relationship(back_populates="user")
 
     def __repr__(self):
         return f"<User: {self.username}>"
 
 
-formula_team = Table(
-    "formula_team",
+one_team = Table(
+    "one_team",
     db.metadata,
     Column("team_id", Integer, ForeignKey("team.id"), primary_key=True),
-    Column("formulaone_id", Integer, ForeignKey("formulaone.id"), primary_key=True),
+    Column("onechampionship_id", Integer, ForeignKey("onechampionship.id"), primary_key=True),
 )
 
 
@@ -50,16 +50,16 @@ class Team(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
 
-    drivers: Mapped[List["FormulaOne"]] = relationship(
-        secondary=formula_team, back_populates="teams"
+    fighters: Mapped[List["ONEChampionship"]] = relationship(
+        secondary=one_team, back_populates="teams"
     )
 
     def __repr__(self):
         return f"<Team: {self.name}>"
 
 
-class FormulaOne(db.Model):
-    __tablename__ = "formulaone"
+class ONEChampionship(db.Model):
+    __tablename__ = "onechampionship"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
@@ -74,11 +74,11 @@ class FormulaOne(db.Model):
         DateTime(timezone=True), server_default=func.now()
     )
 
-    user: Mapped["User"] = relationship(back_populates="drivers")
+    user: Mapped["User"] = relationship(back_populates="fighters")
 
     teams: Mapped[List["Team"]] = relationship(
-        secondary=formula_team, back_populates="drivers"
+        secondary=one_team, back_populates="fighters"
     )
 
     def __repr__(self):
-        return f"<Driver: {self.name}>"
+        return f"<Fighter: {self.name}>"

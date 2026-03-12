@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request
-from formulaone.extensions import db
-from formulaone.models import FormulaOne
+from onechampionship.extensions import db
+from onechampionship.models import ONEChampionship
 
 core_bp = Blueprint(
     "core",
@@ -11,15 +11,15 @@ core_bp = Blueprint(
 @core_bp.route("/")
 def index():
 
-    page = request.args.get("page", 1, type=int)
+    page = request.args.get("page", default=1, type=int)
 
-    formulaones = db.paginate(
-        db.select(FormulaOne),
-        per_page=4,
-        page=page
+    onechampionships = db.paginate(
+        db.select(ONEChampionship).order_by(ONEChampionship.id),
+        page=page,
+        per_page=4
     )
 
     return render_template(
         "core/index.html",
-        formulaones=formulaones
+        onechampionships=onechampionships
     )
