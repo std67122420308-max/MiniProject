@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% block title %}
 {{ title }}
@@ -11,19 +11,17 @@
   <h1>{{ fighter.name }}</h1>
   <hr>
 
-  {% if fighter.image %}
-  <img src="{{ fighter.image }}" class="img-fluid mb-3 rounded">
-  {% endif %}
+  <img src="{{ fighter.image }}" class="img-fluid mb-3">
 
   <p><b>Age:</b> {{ fighter.age }}</p>
   <p><b>Country:</b> {{ fighter.country }}</p>
   <p><b>Weight Class:</b> {{ fighter.weight_class }}</p>
   <p><b>Gym:</b> {{ fighter.gym }}</p>
 
-  <p class="mt-3">{{ fighter.description }}</p>
+  <p>{{ fighter.description }}</p>
 
-  <a href="{{ url_for('onechampionship.index') }}" class="btn btn-secondary mt-3">
-    ← Back
+  <a href="{{ url_for('onechampionship.index') }}" class="btn btn-secondary">
+    Back
   </a>
 
 </div>

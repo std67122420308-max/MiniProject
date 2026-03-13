@@ -1,85 +1,57 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-    {% if current_user.is_authenticated %}
-      <a class="navbar-brand" href="{{ url_for('users.index') }}">onechampionshipe</a>
-    {% else %}
-      <a class="navbar-brand" href="{{ url_for('core.index') }}">onechampionshipe</a>
-    {% endif %}
+  <div class="container">
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+    <a class="navbar-brand" href="{{ url_for('onechampionship.index') }}">
+      🥊 ONE Championship
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="collapse navbar-collapse" id="navbarNav">
 
-      {% if current_user.is_authenticated %}
-      <ul class="navbar-nav me-auto">
-
-        <li class="nav-item">
-          <a class="nav-link active" href="{{ url_for('users.index') }}">Home</a>
-        </li>
+      <ul class="navbar-nav ms-auto">
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('onechampionship.index') }}">onechampionshipes</a>
+          <a class="nav-link" href="{{ url_for('onechampionship.index') }}">
+            Fighters
+          </a>
         </li>
-
-      </ul>
-      {% else %}
-      <ul class="navbar-nav me-auto"></ul>
-      {% endif %}
-
-      <ul class="navbar-nav">
 
         {% if current_user.is_authenticated %}
 
-        <li class="nav-item dropdown">
-
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
-
-            <img src="{{ url_for('static', filename='img/' + (current_user.avatar or 'default.png')) }}"
-                 width="25"
-                 height="25"
-                 class="rounded-circle">
-
-            Welcome, {{ current_user.username }}
-
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('onechampionship.new_onechampionship') }}">
+            <i class="bi bi-plus-circle"></i> New Fighter
           </a>
+        </li>
 
-          <ul class="dropdown-menu">
+        <li class="nav-item">
+          <a class="nav-link text-warning" href="{{ url_for('users.profile') }}">
+            <i class="bi bi-person-circle"></i> {{ current_user.username }}
+          </a>
+        </li>
 
-            <li>
-              <a class="dropdown-item" href="{{ url_for('users.index') }}">
-                <i class="bi bi-person-square"></i> Profile
-              </a>
-            </li>
-
-            <li>
-              <a class="dropdown-item" href="{{ url_for('users.index') }}">
-                <i class="bi bi-input-cursor-text"></i> Change Password
-              </a>
-            </li>
-
-            <li><hr class="dropdown-divider"></li>
-
-            <li>
-              <a class="dropdown-item" href="{{ url_for('users.logout') }}">
-                <i class="bi bi-box-arrow-left"></i> Logout
-              </a>
-            </li>
-
-          </ul>
-
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users.logout') }}">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </a>
         </li>
 
         {% else %}
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('users.register') }}">Register</a>
+          <a class="nav-link" href="{{ url_for('users.login') }}">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+          </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('users.login') }}">Login</a>
+          <a class="nav-link" href="{{ url_for('users.register') }}">
+            <i class="bi bi-person-plus"></i> Register
+          </a>
         </li>
 
         {% endif %}
@@ -87,5 +59,7 @@
       </ul>
 
     </div>
+
   </div>
+
 </nav>

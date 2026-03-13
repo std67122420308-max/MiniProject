@@ -9,37 +9,42 @@
 <div class="container mt-3 mb-3">
   <h1>{{ title }}</h1>
   <hr>
-
+  {% if current_user.is_authenticated %}
+  <a href="{{ url_for('onechampionship.new_onechampionship') }}" class="btn btn-outline-secondary mb-3">
+    New Fighter
+  </a>
+  {% endif %}
   <div class="row">
-    <div class="col-md-6">
-      <a href="{{ url_for('onechampionship.new_onechampionship') }}" class="btn btn-outline-secondary">
-        <i class="bi bi-file-earmark-plus"></i>
-        New Fighter
-      </a>
+    {% for fighter in onechampionships.items %}
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <img src="{{ fighter.image }}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ fighter.name }}</h5>
+          <p><b>Country:</b> {{ fighter.country }}</p>
+          <p><b>Weight Class:</b> {{ fighter.weight_class }}</p>
+          <a href="{{ url_for('onechampionship.detail_onechampionship', id=fighter.id) }}"
+            class="btn btn-outline-success btn-sm">
+            View
+          </a>
+          {% if current_user.is_authenticated %}
+          <a href="{{ url_for('onechampionship.edit_onechampionship', id=fighter.id) }}"
+            class="btn btn-outline-warning btn-sm">
+            Edit
+          </a>
+          <a href="{{ url_for('onechampionship.delete_onechampionship', id=fighter.id) }}"
+            class="btn btn-outline-danger btn-sm">
+            Delete
+          </a>
+
+          {% endif %}
+
+        </div>
+      </div>
     </div>
-    <div class="col-md-6"></div>
+
+    {% endfor %}
   </div>
-
-  <table class="table table-hover mt-3">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Fighter Name</th>
-        <th>Created At</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {% for fighter in onechampionships.items %}
-      <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ fighter.name }}</td>
-        <td>{{ fighter.created_at }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
+  {% include "core/pagination.html" %}
 </div>
-
 {% endblock %}

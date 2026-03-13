@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from onechampionship.extensions import db, bcrypt
 from onechampionship.models import User
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 users_bp = Blueprint("users", __name__, template_folder="templates")
 
@@ -74,6 +74,59 @@ def login():
 
     return render_template("users/login.html", title="Login Page")
 
+@users_bp.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        email = request.form.get("email")
+
+        current_user.username = username
+        current_user.email = email
+
+        db.session.commit()
+
+        flash("Profile updated!", "success")
+        return redirect(url_for("users.profile"))
+
+    return render_template(
+        "users/profile.html",
+        title="User Profile",
+        user=current_user
+    )
+
+@users_bp.route("/change-password", methods=["GET", "POST"])
+@login_required
+def change_password():
+
+    if request.method == "POST":
+
+        old_password = request.form.get("old_password")
+        new_password = request.form.get("new_password")
+        confirm_password = request.form.get("confirm_password")
+
+        if not bcrypt.check_password_hash(current_user.password, old_password):
+            flash("Old password incorrect!", "danger")
+            return redirect(url_for("users.change_password"))
+
+        if new_password != confirm_password:
+            flash("Password not match!", "danger")
+            return redirect(url_for("users.change_password"))
+
+        hashed_password = bcrypt.generate_password_hash(new_password).decode("utf-8")
+
+        current_user.password = hashed_password
+        db.session.commit()
+
+        flash("Password changed successfully!", "success")
+        return redirect(url_for("users.profile"))
+
+    return render_template(
+        "users/change_password.html",
+        title="Change Password"
+    )
 
 @users_bp.route("/logout")
 @login_required
