@@ -3,7 +3,7 @@ from flask import Flask
 from ONEChampionship.extensions import db, login_manager, bcrypt
 from ONEChampionship.core.routes import core_bp
 from ONEChampionship.users.routes import users_bp
-from ONEChampionship.ONEChampionship.routes import ONEChampionship_bp
+from ONEChampionship.Fighters.routes import ONEChampionship_bp
 
 def create_app():
     app = Flask(__name__)

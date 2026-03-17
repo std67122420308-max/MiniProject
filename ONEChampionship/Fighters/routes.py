@@ -26,7 +26,7 @@ def index():
     fighters = db.paginate(query, per_page=4, page=page)
 
     return render_template(
-        "ONEChampionship/index.html",
+        "fighters/index.html",
         title="Fighter Page",
         ONEChampionships=fighters
     )
@@ -90,7 +90,7 @@ def new_ONEChampionship():
         return redirect(url_for("ONEChampionship.index"))
 
     return render_template(
-        "ONEChampionship/new_ONEChampionship.html",
+        "fighters/new_ONEChampionship.html",
         title="New Fighter",
         teams=teams
     )
@@ -104,7 +104,7 @@ def detail_ONEChampionship(id):
         abort(404)
 
     return render_template(
-        "ONEChampionship/detail.html",
+        "fighters/detail.html",
         title=fighter.name,
         fighter=fighter
     )
@@ -148,7 +148,7 @@ def edit_ONEChampionship(id):
         return redirect(url_for("ONEChampionship.detail_ONEChampionship", id=id))
 
     return render_template(
-        "ONEChampionship/edit_ONEChampionship.html",
+        "fighters/edit_ONEChampionship.html",
         fighter=fighter,
         teams=teams,
         title="Edit Fighter"
