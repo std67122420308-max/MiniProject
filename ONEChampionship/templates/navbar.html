@@ -2,7 +2,7 @@
 
   <div class="container">
 
-    <a class="navbar-brand" href="{{ url_for('onechampionship.index') }}">
+    <a class="navbar-brand" href="{{ url_for('ONEChampionship.index') }}">
       🥊 ONE Championship
     </a>
 
@@ -15,7 +15,7 @@
       <ul class="navbar-nav ms-auto">
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('onechampionship.index') }}">
+          <a class="nav-link" href="{{ url_for('ONEChampionship.index') }}">
             Fighters
           </a>
         </li>
@@ -23,7 +23,7 @@
         {% if current_user.is_authenticated %}
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('onechampionship.new_onechampionship') }}">
+          <a class="nav-link" href="{{ url_for('ONEChampionship.new_ONEChampionship') }}">
             <i class="bi bi-plus-circle"></i> New Fighter
           </a>
         </li>

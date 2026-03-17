@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request
-from onechampionship.extensions import db
-from onechampionship.models import ONEChampionship
+from ONEChampionship.extensions import db
+from ONEChampionship.models import ONEChampionship
 
 core_bp = Blueprint(
     "core",
@@ -13,7 +13,7 @@ def index():
 
     page = request.args.get("page", default=1, type=int)
 
-    onechampionships = db.paginate(
+    ONEChampionships = db.paginate(
         db.select(ONEChampionship).order_by(ONEChampionship.id),
         page=page,
         per_page=4
@@ -21,5 +21,5 @@ def index():
 
     return render_template(
         "core/index.html",
-        onechampionships=onechampionships
+        ONEChampionships=ONEChampionships
     )

@@ -12,35 +12,35 @@
   <hr>
 
   <div class="row">
-    <h1 class="text-success">{{ onechampionshipe.name }}</h1>
+    <h1 class="text-success">{{ ONEChampionshipe.name }}</h1>
   </div>
 
   <div class="row">
 
 
 <div class="col-md-4 mt-3">
-  <img src="{{ onechampionshipe.img_url }}" 
+  <img src="{{ ONEChampionshipe.img_url }}" 
        class="img-thumbnail"
-       alt="{{ onechampionshipe.name }}">
+       alt="{{ ONEChampionshipe.name }}">
 </div>
 
 <div class="col-md-8 mt-3 mb-3">
 
   <h2 class="text-success">Nationality</h2>
-  <h4>{{ onechampionshipe.nationality }}</h4>
+  <h4>{{ ONEChampionshipe.nationality }}</h4>
 
   <h2 class="text-success">World Championships</h2>
-  <h4>{{ onechampionshipe.world_championships }}</h4>
+  <h4>{{ ONEChampionshipe.world_championships }}</h4>
 
   <h2 class="text-success">Number</h2>
-  <h4>{{ onechampionshipe.number }}</h4>
+  <h4>{{ ONEChampionshipe.number }}</h4>
 
   <br>
 
   <h2 class="text-success">Team</h2>
 
-  {% if onechampionshipe.teams %}
-    {% for team in onechampionshipe.teams %}
+  {% if ONEChampionshipe.teams %}
+    {% for team in ONEChampionshipe.teams %}
       <span class="btn btn-outline-secondary btn-sm">
         {{ team.name }}
       </span>
@@ -52,7 +52,7 @@
   <hr>
 
   <div class="float-end">
-    <a href="{{ url_for('onechampionship.index') }}" 
+    <a href="{{ url_for('ONEChampionship.index') }}" 
        class="btn btn-outline-success">
       Back to Home Page
     </a>

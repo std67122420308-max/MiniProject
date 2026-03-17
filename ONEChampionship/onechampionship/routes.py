@@ -1,16 +1,15 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, abort
-from onechampionship.extensions import db
-from onechampionship.models import ONEChampionship, Team
+from ONEChampionship.extensions import db
+from ONEChampionship.models import ONEChampionship, Team
 from flask_login import login_required, current_user
 
-
-onechampionship_bp = Blueprint(
-    "onechampionship",
+ONEChampionship_bp = Blueprint(
+    "ONEChampionship",
     __name__,
     template_folder="templates"
 )
 
-@onechampionship_bp.route("/")
+@ONEChampionship_bp.route("/")
 def index():
 
     page = request.args.get("page", 1, type=int)
@@ -19,47 +18,39 @@ def index():
         query = db.select(ONEChampionship).where(
             ONEChampionship.user_id == current_user.id
         ).order_by(ONEChampionship.created_at.desc())
-
     else:
         query = db.select(ONEChampionship).order_by(
             ONEChampionship.created_at.desc()
         )
 
-    onechampionships = db.paginate(
-        query,
-        per_page=4,
-        page=page
-    )
+    fighters = db.paginate(query, per_page=4, page=page)
 
     return render_template(
-        "onechampionship/index.html",
+        "ONEChampionship/index.html",
         title="Fighter Page",
-        onechampionships=onechampionships
+        ONEChampionships=fighters
     )
 
-@onechampionship_bp.route("/new", methods=["GET", "POST"])
+@ONEChampionship_bp.route("/new", methods=["GET", "POST"])
 @login_required
-def new_onechampionship():
+def new_ONEChampionship():
 
     teams = db.session.scalars(db.select(Team)).all()
 
     if request.method == "POST":
 
         name = request.form.get("name")
-        age = request.form.get("age")
+        age = request.form.get("age", type=int)
+        height = request.form.get("height")
         country = request.form.get("country")
         weight_class = request.form.get("weight_class")
         gym = request.form.get("gym")
         description = request.form.get("description")
         image = request.form.get("image")
 
-        team_ids = request.form.getlist("teams")
-
-        selected_teams = []
-        for team_id in team_ids:
-            team = db.session.get(Team, team_id)
-            if team:
-                selected_teams.append(team)
+        if not name:
+            flash("Name is required!", "danger")
+            return redirect(url_for("ONEChampionship.new_ONEChampionship"))
 
         existing = db.session.scalar(
             db.select(ONEChampionship).where(
@@ -69,11 +60,20 @@ def new_onechampionship():
 
         if existing:
             flash(f"Fighter {name} already exists!", "warning")
-            return redirect(url_for("onechampionship.new_onechampionship"))
+            return redirect(url_for("ONEChampionship.new_ONEChampionship"))
+
+        team_ids = request.form.getlist("teams")
+        selected_teams = []
+
+        for team_id in team_ids:
+            team = db.session.get(Team, int(team_id))
+            if team:
+                selected_teams.append(team)
 
         new_fighter = ONEChampionship(
             name=name,
             age=age,
+            height=height,
             country=country,
             weight_class=weight_class,
             gym=gym,
@@ -87,16 +87,16 @@ def new_onechampionship():
         db.session.commit()
 
         flash("Fighter added successfully!", "success")
-        return redirect(url_for("onechampionship.index"))
+        return redirect(url_for("ONEChampionship.index"))
 
     return render_template(
-        "onechampionship/new_onechampionship.html",
+        "ONEChampionship/new_ONEChampionship.html",
         title="New Fighter",
         teams=teams
     )
 
-@onechampionship_bp.route("/detail/<int:id>")
-def detail_onechampionship(id):
+@ONEChampionship_bp.route("/detail/<int:id>")
+def detail_ONEChampionship(id):
 
     fighter = db.session.get(ONEChampionship, id)
 
@@ -104,14 +104,14 @@ def detail_onechampionship(id):
         abort(404)
 
     return render_template(
-        "onechampionship/detail.html",
+        "ONEChampionship/detail.html",
         title=fighter.name,
         fighter=fighter
     )
 
-@onechampionship_bp.route("/edit/<int:id>", methods=["GET", "POST"])
+@ONEChampionship_bp.route("/edit/<int:id>", methods=["GET", "POST"])
 @login_required
-def edit_onechampionship(id):
+def edit_ONEChampionship(id):
 
     fighter = db.session.get(ONEChampionship, id)
 
@@ -121,30 +121,42 @@ def edit_onechampionship(id):
     if fighter.user_id != current_user.id:
         abort(403)
 
+    teams = db.session.scalars(db.select(Team)).all()
+
     if request.method == "POST":
 
         fighter.name = request.form.get("name")
-        fighter.age = request.form.get("age")
+        fighter.age = request.form.get("age", type=int)
+        fighter.height = request.form.get("height")
         fighter.country = request.form.get("country")
         fighter.weight_class = request.form.get("weight_class")
         fighter.gym = request.form.get("gym")
         fighter.description = request.form.get("description")
         fighter.image = request.form.get("image")
 
+        team_ids = request.form.getlist("teams")
+        fighter.teams.clear()
+
+        for team_id in team_ids:
+            team = db.session.get(Team, int(team_id))
+            if team:
+                fighter.teams.append(team)
+
         db.session.commit()
 
         flash("Fighter updated!", "success")
-        return redirect(url_for("onechampionship.index"))
+        return redirect(url_for("ONEChampionship.detail_ONEChampionship", id=id))
 
     return render_template(
-        "onechampionship/edit_onechampionship.html",
+        "ONEChampionship/edit_ONEChampionship.html",
         fighter=fighter,
+        teams=teams,
         title="Edit Fighter"
     )
 
-@onechampionship_bp.route("/delete/<int:id>")
+@ONEChampionship_bp.route("/delete/<int:id>")
 @login_required
-def delete_onechampionship(id):
+def delete_ONEChampionship(id):
 
     fighter = db.session.get(ONEChampionship, id)
 
@@ -159,4 +171,4 @@ def delete_onechampionship(id):
 
     flash("Fighter deleted!", "danger")
 
-    return redirect(url_for("onechampionship.index"))
+    return redirect(url_for("ONEChampionship.index"))

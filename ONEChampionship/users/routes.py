@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from onechampionship.extensions import db, bcrypt
-from onechampionship.models import User
+from ONEChampionship.extensions import db, bcrypt
+from ONEChampionship.models import User
 from flask_login import login_user, logout_user, login_required, current_user
 
 users_bp = Blueprint("users", __name__, template_folder="templates")

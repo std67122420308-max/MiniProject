@@ -13,26 +13,26 @@
 
   <div class="row">
 
-{% for onechampionship in onechampionships.items %}
+{% for ONEChampionship in ONEChampionships.items %}
 <div class="col-lg-3 col-md-4 col-sm-6">
 
-  <div class="card mt-4 card-onechampionship">
+  <div class="card mt-4 card-ONEChampionship">
 
-    <a href="{{ url_for('onechampionship.detail_onechampionship', id=onechampionship.id) }}">
-      <img src="{{ onechampionship.image }}" class="card-img-top bg-secondary" alt="{{ onechampionship.name }}">
+    <a href="{{ url_for('ONEChampionship.detail_ONEChampionship', id=ONEChampionship.id) }}">
+      <img src="{{ ONEChampionship.image }}" class="card-img-top bg-secondary" alt="{{ ONEChampionship.name }}">
     </a>
 
     <div class="card-body">
 
       <h5 class="card-title">
-        {{ onechampionship.name }}
+        {{ ONEChampionship.name }}
       </h5>
 
       <p class="card-text">
-        {{ onechampionship.country }}
+        {{ ONEChampionship.country }}
       </p>
 
-      <a href="{{ url_for('onechampionship.detail_onechampionship', id=onechampionship.id) }}" class="btn btn-outline-success btn-sm">
+      <a href="{{ url_for('ONEChampionship.detail_ONEChampionship', id=ONEChampionship.id) }}" class="btn btn-outline-success btn-sm">
         View Detail
       </a>
 

@@ -1,4 +1,4 @@
-onechampionship_Teams = [
+ONEChampionship_Teams = [
   "อะตอมเวต",
   "สตรอว์เวต",
   "ฟลายเวต",
@@ -11,5 +11,5 @@ onechampionship_Teams = [
   "เฮฟวีเวต"
 ]
 
-from onechampionship.models import Type
-Teams = [Type(name=type) for type in onechampionship_Teams]
+from ONEChampionship.models import Type
+Teams = [Type(name=type) for type in ONEChampionship_Teams]

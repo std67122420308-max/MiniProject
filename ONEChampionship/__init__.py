@@ -1,15 +1,15 @@
 import os
 from flask import Flask
-from onechampionship.extensions import db, login_manager, bcrypt
-from onechampionship.models import User, Team, ONEChampionship
-from onechampionship.core.routes import core_bp
-from onechampionship.users.routes import users_bp
-from onechampionship.onechampionship.routes import onechampionship_bp
+from ONEChampionship.extensions import db, login_manager, bcrypt
+from ONEChampionship.core.routes import core_bp
+from ONEChampionship.users.routes import users_bp
+from ONEChampionship.ONEChampionship.routes import ONEChampionship_bp
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'devkey')
 
     db.init_app(app)
     bcrypt.init_app(app)
@@ -21,6 +21,6 @@ def create_app():
 
     app.register_blueprint(core_bp, url_prefix='/')
     app.register_blueprint(users_bp, url_prefix='/users')
-    app.register_blueprint(onechampionship_bp, url_prefix='/onechampionships')
+    app.register_blueprint(ONEChampionship_bp, url_prefix='/ONEChampionships')
 
     return app
