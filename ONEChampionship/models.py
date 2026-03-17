@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    username: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
+    username: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(100), nullable=False)
     avatar: Mapped[str] = mapped_column(String(25), default="avatar.png")
@@ -67,7 +67,7 @@ class ONEChampionship(db.Model):
     __tablename__ = "onechampionship"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String(150), unique=True, nullable=False)
     age: Mapped[int] = mapped_column(Integer, nullable=False)
     height: Mapped[float] = mapped_column(Float, nullable=False)
     country: Mapped[str] = mapped_column(String(50), nullable=False)
